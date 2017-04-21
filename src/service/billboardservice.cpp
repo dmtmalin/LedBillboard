@@ -1,5 +1,4 @@
 #include "gui/mediawindow.h"
-
 #include "billboardservice.h"
 
 void BillboardService::show()
