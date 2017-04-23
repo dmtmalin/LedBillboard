@@ -1,53 +1,89 @@
 #include <QApplication>
+#include <QString>
 #include <QtDebug>
 #include <QFile>
 #include <QTextStream>
-#include <QtGlobal>
-#include <QApplication>
+#include <QDateTime>
 #include <VLCQtCore/Common.h>
 #include "gui/mainwindow.h"
 
-void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+QFile *logFile;
+
+void releaseLogFile() {
+    if (logFile->isOpen()) {
+        try {
+            logFile->close();
+        }
+        catch(...) { }
+    }
+    delete logFile;
+}
+
+void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    QString message;
+    QString level;
     switch (type) {
         case QtInfoMsg:
-            message = QString("Info: %1 (%2:%3, %4)").arg(msg, context.file, QString::number(context.line), context.function);
+            level = "INFO";
             break;
         case QtDebugMsg:
-            message = QString("Debug: %1 (%2:%4, %4)").arg(msg, context.file, QString::number(context.line), context.function);
+            level = "DEBUG";
             break;
         case QtWarningMsg:
-            message = QString("Warning: %1 (%2:%3, %4)").arg(msg, context.file, QString::number(context.line), context.function);
+            level = "WARNING";
             break;
         case QtCriticalMsg:
-            message = QString("Critical: %1 (%2:%3, %4)").arg(msg, context.file, QString::number(context.line), context.function);
+            level = "CRITICAL";
             break;
         case QtFatalMsg:
-            message = QString("Fatal: %1 (%2:%3, %4)").arg(msg, context.file, QString::number(context.line), context.function);
+            level = "FATAL";
             break;
-        default:
-            message = QString("%1 (%2:%3, %4)").arg(msg, context.file, QString::number(context.line), context.function);
+        default:           
             break;
     }
-    QString app_dir = QApplication::applicationDirPath();
-    QFile outFile(app_dir + "/app.log");
-    outFile.open(QIODevice::WriteOnly | QIODevice::Append);
-    QTextStream ts(&outFile);
-    ts << message << endl;
+    QDateTime now = QDateTime::currentDateTime();
+    QString message = QString("%1 [%2]: %3 (%4:%5, %6)").arg(
+                now.toString(Qt::ISODateWithMs)
+                , level
+                , msg
+                , context.file
+                , QString::number(context.line)
+                , context.function);
+
+    QTextStream ts(logFile);
+    ts << message << endl;   
 }
 
 int main(int argc, char *argv[])
 {
-    qInstallMessageHandler(messageHandler);
     QCoreApplication::setApplicationName("LedBillboard");
     QCoreApplication::setAttribute(Qt::AA_X11InitThreads);
 
     QApplication app(argc, argv);
     VlcCommon::setPluginPath(app.applicationDirPath() + "/plugins");
 
+    QString app_dir = QApplication::applicationDirPath();
+    logFile = new QFile(app_dir + "/app.log");
+    logFile->open(QIODevice::WriteOnly | QIODevice::Append);
+
+#ifndef QT_DEBUG    
+    qInstallMessageHandler(logMessageHandler);
+#endif
+
+    qInfo() << "Application is run.";
+
     MainWindow w;
     w.show();
+    try {
+        app.exec();
+    } catch (const std::bad_alloc &) {
+        qCritical() << "Out of memory exception.";
+    }
 
-    return app.exec();
+    qInfo() << "Application is closed.";
+
+    if (logFile != NULL) {
+        releaseLogFile();
+    }
+    return 0;
 }

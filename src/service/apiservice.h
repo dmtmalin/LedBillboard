@@ -22,11 +22,11 @@ public:
         static ApiService theSingleInstance;
         return theSingleInstance;
     }
+    ~ApiService();
     void login();
 
 private:
-    explicit ApiService(QObject *parent = 0);
-    ~ApiService();
+    explicit ApiService(QObject *parent = 0);    
 
     QNetworkAccessManager *manager;
     QNetworkCookieJar *cookie;

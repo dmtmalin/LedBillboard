@@ -14,11 +14,11 @@ public:
         static BillboardService theSingleInstance;
         return theSingleInstance;
     }
+    ~BillboardService();
 
     void show();
 private:
     explicit BillboardService();
-    ~BillboardService();
 
     MediaWindow *mediaView;
 };

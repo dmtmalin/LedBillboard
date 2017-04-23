@@ -1,4 +1,3 @@
-#include <QString>
 #include <QUrl>
 #include <QUrlQuery>
 #include <QNetworkAccessManager>
@@ -36,11 +35,14 @@ void ApiService::login()
 
 void ApiService::slotLoginFinished()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
-    if(reply->error() == QNetworkReply::NoError ) {
-        qInfo() << "Is loggin";
+    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());    
+    if(reply->error() == QNetworkReply::NoError) {
+        qInfo() << "Authentication success.";
     }
-
+    else {
+        QString url = reply->url().toString();
+        qWarning() << QString("Authentication failed. %1 (%2).").arg(reply->errorString(), url);
+    }
     reply->deleteLater();
 }
 

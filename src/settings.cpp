@@ -8,8 +8,8 @@
 #include "settings.h"
 
 const char* DEFAULT_HOST =  "http://127.0.0.1:8000";
-const char* DEFAULT_USERNAME =  "a@a.com";
-const char* DEFALT_PASSWORD =  "Pw123456";
+const char* DEFAULT_USERNAME =  "admin@admin.com";
+const char* DEFALT_PASSWORD =  "AdminAdmin";
 
 Settings::Settings(QObject *parent) : QObject(parent)
 {
