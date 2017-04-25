@@ -1,15 +1,13 @@
 #include <QApplication>
 #include <QSettings>
-#include <QString>
-#include <QVariant>
 #include <QMetaEnum>
 #include <QStringList>
-#include <QDebug>
 #include "settings.h"
 
 const char* DEFAULT_HOST =  "http://127.0.0.1:8000";
 const char* DEFAULT_USERNAME =  "admin@admin.com";
 const char* DEFALT_PASSWORD =  "AdminAdmin";
+const char* DEFAULT_BOARD = "defaultBoard";
 
 Settings::Settings(QObject *parent) : QObject(parent)
 {
@@ -19,6 +17,7 @@ Settings::Settings(QObject *parent) : QObject(parent)
     this->setDefaultValue(Settings::HOST, DEFAULT_HOST);
     this->setDefaultValue(Settings::USERNAME, DEFAULT_USERNAME);
     this->setDefaultValue(Settings::PASSWORD, DEFALT_PASSWORD);
+    this->setDefaultValue(Settings::BOARD, DEFAULT_BOARD);
     this->settings->sync();
 }
 

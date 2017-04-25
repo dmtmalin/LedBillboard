@@ -1,5 +1,4 @@
-#include "service/apiservice.h"
-
+#include "service/playlistservice.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -9,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ApiService::Instance().login();
+    playlistService::Instance()->initializeModel();
 }
 
 MainWindow::~MainWindow()

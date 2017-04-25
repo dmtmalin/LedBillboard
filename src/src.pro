@@ -29,14 +29,19 @@ SOURCES += gui/mainwindow.cpp \
     gui/mediawindow.cpp \
     model/playlist.cpp \
     service/apiservice.cpp \
-    settings.cpp
+    settings.cpp \
+    service/playlistservice.cpp \
+    model/mediacontent.cpp
 
 HEADERS += gui/mainwindow.h \
     service/billboardservice.h \
     gui/mediawindow.h \
     model/playlist.h \
     service/apiservice.h \
-    settings.h
+    settings.h \
+    service/playlistservice.h \
+    singleton.h \
+    model/mediacontent.h
 
 FORMS += gui/mainwindow.ui \
     gui/mediawindow.ui

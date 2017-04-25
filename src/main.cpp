@@ -1,10 +1,13 @@
 #include <QApplication>
-#include <QString>
 #include <QtDebug>
 #include <QFile>
 #include <QTextStream>
 #include <QDateTime>
 #include <VLCQtCore/Common.h>
+#include "service/apiservice.h"
+#include "service/billboardservice.h"
+#include "service/playlistservice.h"
+#include "settings.h"
 #include "gui/mainwindow.h"
 
 QFile *logFile;
@@ -17,6 +20,17 @@ void releaseLogFile() {
         catch(...) { }
     }
     delete logFile;
+}
+
+void releaseResources() {
+    apiService::Instance()->~ApiService();
+    billboardService::Instance()->~BillboardService();
+    playlistService::Instance()->~PlaylistService();
+    settings::Instance()->~Settings();
+
+    if (logFile != NULL) {
+        releaseLogFile();
+    }
 }
 
 void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -79,11 +93,8 @@ int main(int argc, char *argv[])
     } catch (const std::bad_alloc &) {
         qCritical() << "Out of memory exception.";
     }
+    releaseResources();
 
     qInfo() << "Application is closed.";
-
-    if (logFile != NULL) {
-        releaseLogFile();
-    }
     return 0;
 }
