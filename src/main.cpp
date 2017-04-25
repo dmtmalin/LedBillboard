@@ -7,6 +7,7 @@
 #include "service/apiservice.h"
 #include "service/billboardservice.h"
 #include "service/playlistservice.h"
+#include "model/playlistcollection.h"
 #include "settings.h"
 #include "gui/mainwindow.h"
 
@@ -25,7 +26,8 @@ void releaseLogFile() {
 void releaseResources() {
     apiService::Instance()->~ApiService();
     billboardService::Instance()->~BillboardService();
-    playlistService::Instance()->~PlaylistService();
+    playlistService::Instance()->~PlaylistService();    
+    playlistCollection::Instance()->~PlaylistCollection();
     settings::Instance()->~Settings();
 
     if (logFile != NULL) {

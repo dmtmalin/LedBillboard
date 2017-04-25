@@ -12,26 +12,69 @@ Playlist::Playlist()
 }
 
 Playlist::~Playlist()
-{
+{    
     delete this->mediaContent;
 }
 
-Playlist Playlist::fromJson(QJsonDocument &doc)
+Playlist Playlist::fromJson(QJsonObject &obj)
 {
+    QString id = obj["id"].toString();
+    QString command = obj["schedule"].toObject()
+            ["cron"].toString();
+    QString description = obj["schedule"].toObject()
+            ["description"].toString();
     Playlist playlist;
-    if (doc.isObject()) {
-        QJsonObject obj = doc.object();
-        QJsonArray edges = obj.take("edges").toArray();
-        if (edges.isEmpty()) {
-            qInfo() << "Playlist data is empty.";
-        }
-        else {
-
-        }
+    playlist.setId(id);
+    playlist.setCronCommand(command);
+    playlist.setCronDescription(description);
+    QJsonArray mediaArr = obj["media"].toArray();
+    if (mediaArr.isEmpty()) {
+        qWarning() << QString("Playlist %1 not have media item.").arg(id);
     }
     else {
-        qWarning() << "Cant't parse playlist data.";
+        foreach (const QJsonValue &item, mediaArr) {
+            QJsonObject obj = item.toObject();
+            MediaContent media = MediaContent::fromJson(obj);
+            playlist.mediaContent->append(media);
+        }
     }
-
     return playlist;
+}
+
+/*
+ * SETTERS
+*/
+
+void Playlist::setId(QString &id)
+{
+    this->id = id;
+}
+
+void Playlist::setCronCommand(QString &command)
+{
+    this->cronCommand = command;
+}
+
+void Playlist::setCronDescription(QString &desc)
+{
+    this->cronDescription = desc;
+}
+
+/*
+ * GETTERS
+*/
+
+QString Playlist::getId()
+{
+    return this->id;
+}
+
+QString Playlist::getCronCommand()
+{
+    return this->cronCommand;
+}
+
+QString Playlist::getCronDescription()
+{
+    return this->cronDescription;
 }

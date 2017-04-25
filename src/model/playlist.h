@@ -5,14 +5,20 @@ class MediaContent;
 class QString;
 template <typename MediaContent>
 class QList;
-class QJsonDocument;
+class QJsonObject;
 
 class Playlist
 {
 public:
     Playlist();
     ~Playlist();
-    static Playlist fromJson(QJsonDocument &doc);
+    static Playlist fromJson(QJsonObject &obj);
+    void setId(QString &id);
+    void setCronCommand(QString &command);
+    void setCronDescription(QString &desc);
+    QString getId();
+    QString getCronCommand();
+    QString getCronDescription();
 
 private:
     QString id;

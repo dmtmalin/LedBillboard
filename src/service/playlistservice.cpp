@@ -2,11 +2,11 @@
 #include <QByteArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include "model/playlist.h"
+#include <QJsonArray>
+#include "model/playlistcollection.h"
 #include "service/apiservice.h"
 #include "settings.h"
 #include "playlistservice.h"
-
 
 PlaylistService::PlaylistService(QObject *parent) : QObject(parent)
 {
@@ -50,7 +50,22 @@ void PlaylistService::slotLoginFailure()
 void PlaylistService::slotAllPlaylistSuccess(QByteArray &arr)
 {
     QJsonDocument doc = QJsonDocument::fromJson(arr);
-    Playlist playlist = Playlist::fromJson(doc);
+    if (doc.isObject()) {
+        QJsonObject obj = doc.object();
+        QJsonArray edges = obj
+                        ["data"].toObject()
+                        ["allPlaylist"].toObject()
+                        ["edges"].toArray();
+        if (edges.isEmpty()) {
+            qWarning() << "Playlist data is empty.";
+        }
+        else {
+            playlistCollection::Instance()->fromJson(edges);
+        }
+    }
+    else {
+        qWarning() << "Cant't parse playlist json data.";
+    }
 }
 
 void PlaylistService::slotAllPlaylistFailure()
