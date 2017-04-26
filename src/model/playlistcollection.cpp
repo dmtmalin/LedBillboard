@@ -19,6 +19,23 @@ void PlaylistCollection::fromJson(QJsonArray &arr)
     }
 }
 
+QList<MediaContent *> PlaylistCollection::getAllMedia()
+{
+    QList<MediaContent *> allMedia;
+    foreach (Playlist *playlist, *this->collection) {
+        QList<MediaContent *> *mediaContent = playlist->getMediaContent();
+        foreach (MediaContent *media, *mediaContent) {
+            allMedia.append(media);
+        }
+    }
+    return allMedia;
+}
+
+int PlaylistCollection::count()
+{
+    return this->collection->count();
+}
+
 PlaylistCollection::~PlaylistCollection()
 {
     qDeleteAll(this->collection->begin(), this->collection->end());

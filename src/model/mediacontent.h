@@ -1,6 +1,10 @@
 #ifndef MEDIACONTENT_H
 #define MEDIACONTENT_H
 
+namespace Model {
+class MediaContent;
+}
+
 class QString;
 class QJsonObject;
 

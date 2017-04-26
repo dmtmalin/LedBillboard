@@ -4,10 +4,15 @@
 #include <QObject>
 #include "singleton.h"
 
+namespace Model {
+class PlaylistCollection;
+}
+
 class Playlist;
 template <typename Playlist>
 class QList;
 class QJsonArray;
+class MediaContent;
 
 class PlaylistCollection : public QObject
 {
@@ -15,6 +20,8 @@ class PlaylistCollection : public QObject
 public:
     explicit PlaylistCollection(QObject *parent = 0);
     void fromJson(QJsonArray &arr);
+    QList<MediaContent *> getAllMedia();
+    int count();
     ~PlaylistCollection();
 
 private:

@@ -8,10 +8,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect(playlistCollectionService::Instance(), SIGNAL(successAllPlaylist()), SLOT(slotSuccessAllPlaylist()));
+
     playlistCollectionService::Instance()->loadFromService();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::slotSuccessAllPlaylist()
+{
+    playlistCollectionService::Instance()->DownloadMediaFiles();
 }

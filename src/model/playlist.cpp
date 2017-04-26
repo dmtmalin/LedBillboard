@@ -79,3 +79,8 @@ QString Playlist::getCronDescription()
 {
     return this->cronDescription;
 }
+
+QList<MediaContent *> *Playlist::getMediaContent()
+{
+    return this->mediaContent;
+}

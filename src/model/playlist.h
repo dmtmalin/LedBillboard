@@ -1,6 +1,10 @@
 #ifndef PLAYLIST_H
 #define PLAYLIST_H
 
+namespace Model {
+class Playlist;
+}
+
 class MediaContent;
 class QString;
 template <typename MediaContent>
@@ -19,6 +23,7 @@ public:
     QString getId();
     QString getCronCommand();
     QString getCronDescription();
+    QList<MediaContent *> *getMediaContent();
 
 private:
     QString id;

@@ -32,7 +32,8 @@ SOURCES += gui/mainwindow.cpp \
     settings.cpp \
     model/mediacontent.cpp \
     model/playlistcollection.cpp \
-    service/playlistcollectionservice.cpp
+    service/playlistcollectionservice.cpp \
+    utils.cpp
 
 HEADERS += gui/mainwindow.h \
     service/billboardservice.h \
@@ -43,7 +44,8 @@ HEADERS += gui/mainwindow.h \
     singleton.h \
     model/mediacontent.h \
     model/playlistcollection.h \
-    service/playlistcollectionservice.h
+    service/playlistcollectionservice.h \
+    utils.h
 
 FORMS += gui/mainwindow.ui \
     gui/mediawindow.ui

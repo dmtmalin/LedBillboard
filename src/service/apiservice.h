@@ -16,6 +16,8 @@ class QByteArray;
 class QNetworkAccessManager;
 class QNetworkReply;
 class QNetworkCookieJar;
+class QSslError;
+class MediaContent;
 
 class ApiService : public QObject
 {
@@ -24,7 +26,8 @@ public:
     explicit ApiService(QObject *parent = 0);
     ~ApiService();
     void login();
-    void allPlaylist(QString &boardSlug);
+    void allPlaylist(const QString &boardSlug);
+    void downloadFile(QString &url, QString &filename);
 
 private:
     QNetworkAccessManager *manager;
@@ -33,12 +36,15 @@ private:
 private slots:
     void slotLoginFinished();
     void slotAllPlaylistFinished();
+    void slotDownloadFinished();
+    void slotSslErrors(const QList<QSslError> &errors);
 
 signals:
     void loginSuccess();
     void loginFailure();
     void allPlaylistFailure();
     void allPlaylistSuccess(QByteArray&);
+    void downloadFinished();
 };
 
 typedef Singleton<ApiService> apiService;
