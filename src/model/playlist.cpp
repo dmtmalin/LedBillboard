@@ -8,25 +8,26 @@
 
 Playlist::Playlist()
 {
-    this->mediaContent = new QList<MediaContent>();
+    this->mediaContent = new QList<MediaContent *>();
 }
 
 Playlist::~Playlist()
 {    
+    qDeleteAll(this->mediaContent->begin(), this->mediaContent->end());
     delete this->mediaContent;
 }
 
-Playlist Playlist::fromJson(QJsonObject &obj)
+Playlist *Playlist::fromJson(QJsonObject &obj)
 {
     QString id = obj["id"].toString();
     QString command = obj["schedule"].toObject()
             ["cron"].toString();
     QString description = obj["schedule"].toObject()
             ["description"].toString();
-    Playlist playlist;
-    playlist.setId(id);
-    playlist.setCronCommand(command);
-    playlist.setCronDescription(description);
+    Playlist *playlist = new Playlist();
+    playlist->setId(id);
+    playlist->setCronCommand(command);
+    playlist->setCronDescription(description);
     QJsonArray mediaArr = obj["media"].toArray();
     if (mediaArr.isEmpty()) {
         qWarning() << QString("Playlist %1 not have media item.").arg(id);
@@ -34,8 +35,8 @@ Playlist Playlist::fromJson(QJsonObject &obj)
     else {
         foreach (const QJsonValue &item, mediaArr) {
             QJsonObject obj = item.toObject();
-            MediaContent media = MediaContent::fromJson(obj);
-            playlist.mediaContent->append(media);
+            MediaContent *media = MediaContent::fromJson(obj);
+            playlist->mediaContent->append(media);
         }
     }
     return playlist;

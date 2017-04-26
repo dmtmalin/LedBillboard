@@ -18,7 +18,7 @@ public:
     ~PlaylistCollection();
 
 private:
-    QList<Playlist> *collection;
+    QList<Playlist *> *collection;
 };
 
 typedef Singleton<PlaylistCollection> playlistCollection;

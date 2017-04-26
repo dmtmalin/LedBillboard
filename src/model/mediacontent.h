@@ -8,7 +8,7 @@ class MediaContent
 {
 public:
     MediaContent();
-    static MediaContent fromJson(QJsonObject &obj);
+    static MediaContent* fromJson(QJsonObject &obj);
     void setId(QString &id);
     void setUrl(QString &url);
     void setFileName(QString &fileName);

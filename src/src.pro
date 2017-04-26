@@ -30,9 +30,9 @@ SOURCES += gui/mainwindow.cpp \
     model/playlist.cpp \
     service/apiservice.cpp \
     settings.cpp \
-    service/playlistservice.cpp \
     model/mediacontent.cpp \
-    model/playlistcollection.cpp
+    model/playlistcollection.cpp \
+    service/playlistcollectionservice.cpp
 
 HEADERS += gui/mainwindow.h \
     service/billboardservice.h \
@@ -40,10 +40,10 @@ HEADERS += gui/mainwindow.h \
     model/playlist.h \
     service/apiservice.h \
     settings.h \
-    service/playlistservice.h \
     singleton.h \
     model/mediacontent.h \
-    model/playlistcollection.h
+    model/playlistcollection.h \
+    service/playlistcollectionservice.h
 
 FORMS += gui/mainwindow.ui \
     gui/mediawindow.ui

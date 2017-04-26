@@ -1,4 +1,4 @@
-#include "service/playlistservice.h"
+#include "service/playlistcollectionservice.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    playlistService::Instance()->initializeModel();
+    playlistCollectionService::Instance()->loadFromService();
 }
 
 MainWindow::~MainWindow()

@@ -12,7 +12,7 @@ class Playlist
 public:
     Playlist();
     ~Playlist();
-    static Playlist fromJson(QJsonObject &obj);
+    static Playlist* fromJson(QJsonObject &obj);
     void setId(QString &id);
     void setCronCommand(QString &command);
     void setCronDescription(QString &desc);
@@ -24,7 +24,7 @@ private:
     QString id;
     QString cronCommand;
     QString cronDescription;
-    QList<MediaContent> *mediaContent;
+    QList<MediaContent *> *mediaContent;
 };
 
 #endif // PLAYLIST_H

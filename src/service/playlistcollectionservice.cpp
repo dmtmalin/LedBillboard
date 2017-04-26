@@ -6,9 +6,9 @@
 #include "model/playlistcollection.h"
 #include "service/apiservice.h"
 #include "settings.h"
-#include "playlistservice.h"
+#include "playlistcollectionservice.h"
 
-PlaylistService::PlaylistService(QObject *parent) : QObject(parent)
+PlaylistCollectionService::PlaylistCollectionService(QObject *parent) : QObject(parent)
 {
     connect(apiService::Instance(), SIGNAL(loginSuccess()), SLOT(slotLoginSuccess()));
     connect(apiService::Instance(), SIGNAL(loginFailure()), SLOT(slotLoginFailure()));
@@ -17,17 +17,17 @@ PlaylistService::PlaylistService(QObject *parent) : QObject(parent)
     connect(apiService::Instance(), SIGNAL(allPlaylistFailure()), SLOT(slotAllPlaylistFailure()));
 }
 
-PlaylistService::~PlaylistService()
+PlaylistCollectionService::~PlaylistCollectionService()
 {
-
+    playlistCollection::Instance()->~PlaylistCollection();
 }
 
-void PlaylistService::initializeModel()
+void PlaylistCollectionService::loadFromService()
 {
     apiService::Instance()->login();
 }
 
-void PlaylistService::updateModel()
+void PlaylistCollectionService::updateModel()
 {
 
 }
@@ -36,18 +36,18 @@ void PlaylistService::updateModel()
  * SLOTS
 */
 
-void PlaylistService::slotLoginSuccess()
+void PlaylistCollectionService::slotLoginSuccess()
 {
     QString board = settings::Instance()->getValue(Settings::BOARD);
     apiService::Instance()->allPlaylist(board);
 }
 
-void PlaylistService::slotLoginFailure()
+void PlaylistCollectionService::slotLoginFailure()
 {
 
 }
 
-void PlaylistService::slotAllPlaylistSuccess(QByteArray &arr)
+void PlaylistCollectionService::slotAllPlaylistSuccess(QByteArray &arr)
 {
     QJsonDocument doc = QJsonDocument::fromJson(arr);
     if (doc.isObject()) {
@@ -68,7 +68,7 @@ void PlaylistService::slotAllPlaylistSuccess(QByteArray &arr)
     }
 }
 
-void PlaylistService::slotAllPlaylistFailure()
+void PlaylistCollectionService::slotAllPlaylistFailure()
 {
 
 }

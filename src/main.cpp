@@ -6,8 +6,7 @@
 #include <VLCQtCore/Common.h>
 #include "service/apiservice.h"
 #include "service/billboardservice.h"
-#include "service/playlistservice.h"
-#include "model/playlistcollection.h"
+#include "service/playlistcollectionservice.h"
 #include "settings.h"
 #include "gui/mainwindow.h"
 
@@ -26,8 +25,7 @@ void releaseLogFile() {
 void releaseResources() {
     apiService::Instance()->~ApiService();
     billboardService::Instance()->~BillboardService();
-    playlistService::Instance()->~PlaylistService();    
-    playlistCollection::Instance()->~PlaylistCollection();
+    playlistCollectionService::Instance()->~PlaylistCollectionService();
     settings::Instance()->~Settings();
 
     if (logFile != NULL) {

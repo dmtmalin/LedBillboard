@@ -6,13 +6,13 @@ MediaContent::MediaContent()
 {
 }
 
-MediaContent MediaContent::fromJson(QJsonObject &obj)
+MediaContent *MediaContent::fromJson(QJsonObject &obj)
 {
     QString id = obj["id"].toString();
     QString url = obj["url"].toString();
-    MediaContent media;
-    media.setId(id);
-    media.setUrl(url);
+    MediaContent* media = new MediaContent();
+    media->setId(id);
+    media->setUrl(url);
     return media;
 }
 

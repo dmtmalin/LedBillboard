@@ -6,7 +6,7 @@
 
 PlaylistCollection::PlaylistCollection(QObject *parent) : QObject(parent)
 {
-    this->collection = new QList<Playlist>();
+    this->collection = new QList<Playlist *>();
 }
 
 void PlaylistCollection::fromJson(QJsonArray &arr)
@@ -14,12 +14,13 @@ void PlaylistCollection::fromJson(QJsonArray &arr)
     foreach (const QJsonValue &item, arr) {
         QJsonObject node = item.toObject()
                 ["node"].toObject();
-        Playlist playlist = Playlist::fromJson(node);
+        Playlist* playlist = Playlist::fromJson(node);
         collection->append(playlist);
     }
 }
 
 PlaylistCollection::~PlaylistCollection()
 {
+    qDeleteAll(this->collection->begin(), this->collection->end());
     delete this->collection;
 }
