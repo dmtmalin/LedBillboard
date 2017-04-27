@@ -15,7 +15,7 @@ const char* GRAPH_URL = "/graphql";
 
 ApiService::ApiService(QObject *parent) : QObject(parent)
 {
-    this->cookie = new MyCookiejar();
+    this->cookie = new MyCookieJar();
     this->manager = new QNetworkAccessManager(this);
     this->manager->setCookieJar(this->cookie);
 }
@@ -72,6 +72,11 @@ void ApiService::downloadFile(QString &url, QString &filename)
 #ifndef QT_NO_SSL
     connect(reply, SIGNAL(sslErrors(QList<QSslError>)), SLOT(slotSslErrors(QList<QSslError>)));
 #endif
+}
+
+MyCookieJar *ApiService::getCookie()
+{
+    return this->cookie;
 }
 
 /*
@@ -141,12 +146,12 @@ ApiService::~ApiService()
     delete this->manager;
 }
 
-bool MyCookiejar::isEmpty()
+bool MyCookieJar::isEmpty()
 {
     return (allCookies().count() > 0) ? false : true;
 }
 
-void MyCookiejar::clear()
+void MyCookieJar::clear()
 {
     QList<QNetworkCookie> cookies = allCookies();
     foreach (QNetworkCookie cookie, cookies) {

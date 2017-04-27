@@ -5,11 +5,6 @@
 #include <QMetaEnum>
 #include "singleton.h"
 
-extern const char* DEFAULT_HOST;
-extern const char* DEFAULT_USERNAME;
-extern const char* DEFALT_PASSWORD;
-extern const char* DEFAULT_BOARD;
-
 class QSettings;
 class QString;
 class QVariant;
@@ -22,7 +17,8 @@ public:
         HOST,
         USERNAME,
         PASSWORD,
-        BOARD
+        BOARD,
+        RETRY
     };
     Q_ENUM(Key)
     explicit Settings(QObject *parent = 0);

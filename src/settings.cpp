@@ -4,20 +4,16 @@
 #include <QStringList>
 #include "settings.h"
 
-const char* DEFAULT_HOST =  "http://127.0.0.1:8000";
-const char* DEFAULT_USERNAME =  "admin@admin.com";
-const char* DEFALT_PASSWORD =  "AdminAdmin";
-const char* DEFAULT_BOARD = "defaultBoard";
-
 Settings::Settings(QObject *parent) : QObject(parent)
 {
     QString app_dir = QApplication::applicationDirPath();
     QString settings_path = app_dir + "/settings.ini";
     settings = new QSettings(settings_path, QSettings::IniFormat);
-    this->setDefaultValue(Settings::HOST, DEFAULT_HOST);
-    this->setDefaultValue(Settings::USERNAME, DEFAULT_USERNAME);
-    this->setDefaultValue(Settings::PASSWORD, DEFALT_PASSWORD);
-    this->setDefaultValue(Settings::BOARD, DEFAULT_BOARD);
+    this->setDefaultValue(Settings::HOST, "http://127.0.0.1:8000");
+    this->setDefaultValue(Settings::USERNAME, "admin@admin.com");
+    this->setDefaultValue(Settings::PASSWORD, "adminAdmin");
+    this->setDefaultValue(Settings::BOARD, "defaultBoard");
+    this->setDefaultValue(Settings::RETRY, 60000);
     this->settings->sync();
 }
 

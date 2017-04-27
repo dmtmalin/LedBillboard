@@ -14,7 +14,7 @@ void PlaylistCollection::fromJson(QJsonArray &arr)
     foreach (const QJsonValue &item, arr) {
         QJsonObject node = item.toObject()
                 ["node"].toObject();
-        Playlist* playlist = Playlist::fromJson(node);
+        Playlist *playlist = Playlist::fromJson(node);
         collection->append(playlist);
     }
 }

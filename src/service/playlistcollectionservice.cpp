@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QFile>
+#include <QTimer>
 #include "model/playlist.h"
 #include "model/mediacontent.h"
 #include "model/playlistcollection.h"
@@ -30,7 +31,14 @@ PlaylistCollectionService::~PlaylistCollectionService()
 void PlaylistCollectionService::loadFromService()
 {
     qInfo() << "---Start load playlist collection from service---";
-    apiService::Instance()->login();
+    MyCookieJar *cookie = apiService::Instance()->getCookie();
+    if(cookie->isEmpty()) {
+        apiService::Instance()->login();
+    }
+    else {
+        QString board = settings::Instance()->getValue(Settings::BOARD);
+        apiService::Instance()->allPlaylist(board);
+    }
 }
 
 void PlaylistCollectionService::DownloadMediaFiles()
@@ -65,8 +73,11 @@ void PlaylistCollectionService::slotLoginSuccess()
 }
 
 void PlaylistCollectionService::slotLoginFailure()
-{
-
+{    
+    int retry = settings::Instance()->getValue(Settings::RETRY).toInt();
+    int retrySec = retry / 1000;
+    qInfo() << QString("Retry login in %1 sec.").arg(retrySec);
+    QTimer::singleShot(retry, apiService::Instance(), apiService::Instance()->login);
 }
 
 void PlaylistCollectionService::slotAllPlaylistSuccess(QByteArray &arr)
@@ -95,7 +106,11 @@ void PlaylistCollectionService::slotAllPlaylistSuccess(QByteArray &arr)
 
 void PlaylistCollectionService::slotAllPlaylistFailure()
 {
-
+    apiService::Instance()->getCookie()->clear();
+    int retry = settings::Instance()->getValue(Settings::RETRY).toInt();
+    int retrySec = retry / 1000;
+    qWarning() << QString("Retry load playlist collection in %1 sec.").arg(retrySec);
+    QTimer::singleShot(retry, this, loadFromService);
 }
 
 void PlaylistCollectionService::slotDownloadFinished()

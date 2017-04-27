@@ -22,16 +22,32 @@ class MediaContent;
 /*
  * Класс для работы с cookies.
 */
-class MyCookiejar : public QNetworkCookieJar
+class MyCookieJar : public QNetworkCookieJar
 {
 public:
     bool isEmpty();
     void clear();
 };
 
-
 /*
- * Класс-сервис для работы с API.
+ * Одиночка для работы с API.
+ * Методы:
+ *  login - авторизация на сервисе. Используется механиз сессий. Id сессии
+ *  сохранется в cookies (MyCookieJar).
+ *  allPlaylist - получение коллекции плейлистов.
+ *  downloadFile - скачивание файла.
+ * Слоты:
+ *  slotLoginFinished - обработка ответа аутентификации.
+ *  slotAllPlaylistFinished - обработка ответа на получение коллекции плейлистов.
+ *  slotDownloadFinished - обработка ответа на скачивание файла (получение медии).
+ *  slotSslErrors - обработка ошибок SSL (запись в лог).
+ * Сигналы:
+ *  loginSuccess - сигнал успешного логина.
+ *  loginFailure - сигнал неудачной аутентификации (неавторизован/сетевая ошибка).
+ *  allPlaylistFailure - сигнал неудачного получения коллекции плейлистов (доступ
+ *  запрещен/сетевая ошибка).
+ *  allPlaylistSuccess - сигнал успешного получения коллекции плейлистов.
+ *  downloadFinished - сигнал завершения скачивания файла.
 */
 class ApiService : public QObject
 {
@@ -42,10 +58,11 @@ public:
     void login();
     void allPlaylist(const QString &boardSlug);
     void downloadFile(QString &url, QString &filename);
+    MyCookieJar* getCookie();
 
 private:
     QNetworkAccessManager *manager;
-    MyCookiejar *cookie;
+    MyCookieJar *cookie;
 
 private slots:
     void slotLoginFinished();
