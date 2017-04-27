@@ -17,7 +17,7 @@ ApiService::ApiService(QObject *parent) : QObject(parent)
 {
     this->cookie = new QNetworkCookieJar();
     this->manager = new QNetworkAccessManager(this);
-    this->manager->setCookieJar(cookie);
+    this->manager->setCookieJar(this->cookie);
 }
 
 void ApiService::login()

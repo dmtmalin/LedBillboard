@@ -24,7 +24,7 @@ PlaylistCollectionService::PlaylistCollectionService(QObject *parent) : QObject(
 
 PlaylistCollectionService::~PlaylistCollectionService()
 {
-    playlistCollection::Instance()->~PlaylistCollection();
+    delete playlistCollection::Instance();
 }
 
 void PlaylistCollectionService::loadFromService()

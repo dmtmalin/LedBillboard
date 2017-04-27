@@ -23,10 +23,10 @@ void releaseLogFile() {
 }
 
 void releaseResources() {
-    apiService::Instance()->~ApiService();
-    billboardService::Instance()->~BillboardService();
-    playlistCollectionService::Instance()->~PlaylistCollectionService();
-    settings::Instance()->~Settings();
+    delete apiService::Instance();
+    delete billboardService::Instance();
+    delete playlistCollectionService::Instance();
+    delete settings::Instance();
 
     if (logFile != NULL) {
         releaseLogFile();
