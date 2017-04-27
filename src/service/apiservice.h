@@ -2,6 +2,7 @@
 #define APISERVICE_H
 
 #include <QObject>
+#include <QNetworkCookieJar>
 #include "singleton.h"
 
 extern const char* LOGIN_URL;
@@ -15,10 +16,23 @@ class QString;
 class QByteArray;
 class QNetworkAccessManager;
 class QNetworkReply;
-class QNetworkCookieJar;
 class QSslError;
 class MediaContent;
 
+/*
+ * Класс для работы с cookies.
+*/
+class MyCookiejar : public QNetworkCookieJar
+{
+public:
+    bool isEmpty();
+    void clear();
+};
+
+
+/*
+ * Класс-сервис для работы с API.
+*/
 class ApiService : public QObject
 {
     Q_OBJECT
@@ -31,7 +45,7 @@ public:
 
 private:
     QNetworkAccessManager *manager;
-    QNetworkCookieJar *cookie;
+    MyCookiejar *cookie;
 
 private slots:
     void slotLoginFinished();

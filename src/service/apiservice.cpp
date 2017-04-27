@@ -3,7 +3,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QNetworkCookieJar>
+#include <QNetworkCookie>
 #include <QSslError>
 #include "model/mediacontent.h"
 #include "settings.h"
@@ -15,7 +15,7 @@ const char* GRAPH_URL = "/graphql";
 
 ApiService::ApiService(QObject *parent) : QObject(parent)
 {
-    this->cookie = new QNetworkCookieJar();
+    this->cookie = new MyCookiejar();
     this->manager = new QNetworkAccessManager(this);
     this->manager->setCookieJar(this->cookie);
 }
@@ -88,7 +88,7 @@ void ApiService::slotLoginFinished()
     else {
         qWarning() << QString("Authentication failed. %1.").arg(reply->errorString());
         emit loginFailure();        
-    }
+    }    
     reply->deleteLater();
 }
 
@@ -139,4 +139,17 @@ ApiService::~ApiService()
 {
     delete this->cookie;
     delete this->manager;
+}
+
+bool MyCookiejar::isEmpty()
+{
+    return (allCookies().count() > 0) ? false : true;
+}
+
+void MyCookiejar::clear()
+{
+    QList<QNetworkCookie> cookies = allCookies();
+    foreach (QNetworkCookie cookie, cookies) {
+        deleteCookie(cookie);
+    }
 }
