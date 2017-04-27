@@ -36,6 +36,7 @@ public:
  *  сохранется в cookies (MyCookieJar).
  *  allPlaylist - получение коллекции плейлистов.
  *  downloadFile - скачивание файла.
+ *  getCookie - получение ссылки на cookie.
  * Слоты:
  *  slotLoginFinished - обработка ответа аутентификации.
  *  slotAllPlaylistFinished - обработка ответа на получение коллекции плейлистов.

@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(playlistCollectionService::Instance(), SIGNAL(successAllPlaylist()), SLOT(slotSuccessAllPlaylist()));
+    connect(playlistCollectionService::Instance(), SIGNAL(successLoadFromService()), SLOT(slotSuccessAllPlaylist()));
 
     playlistCollectionService::Instance()->loadFromService();
 }

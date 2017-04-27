@@ -25,7 +25,9 @@ PlaylistCollectionService::PlaylistCollectionService(QObject *parent) : QObject(
 
 PlaylistCollectionService::~PlaylistCollectionService()
 {
-    delete playlistCollection::Instance();
+    if (this->playlistCollection != NULL) {
+        delete this->playlistCollection;
+    }
 }
 
 void PlaylistCollectionService::loadFromService()
@@ -44,12 +46,17 @@ void PlaylistCollectionService::loadFromService()
 void PlaylistCollectionService::DownloadMediaFiles()
 {
     qInfo() << "---Start sync media files.---";
-    QList<MediaContent *> mediaContent = playlistCollection::Instance()->getAllMedia();
+    if (this->playlistCollection == NULL) {
+        qCritical() << "---Playlist collection is NULL! Finish sync media files.---";
+        return;
+    }
+    QList<MediaContent *> mediaContent = this->playlistCollection->getAllMedia();
     foreach (MediaContent *media, mediaContent) {
         QString url = media->getUrl();
         QString filenameToSave = media->getFileName();
         if(QFile::exists(filenameToSave)) {
-            qInfo() << QString("Media file %1 allready exists. Skip download.").arg(filenameToSave);
+            qInfo() << QString("Media file %1 allready exists. Skip download.").arg(
+                           filenameToSave);
         }
         else {
             ++this->downloadCounter;
@@ -93,15 +100,19 @@ void PlaylistCollectionService::slotAllPlaylistSuccess(QByteArray &arr)
             qWarning() << "Playlist data is empty.";
         }
         else {
-            playlistCollection::Instance()->fromJson(edges);
+            this->playlistCollection = PlaylistCollection::fromJson(edges);
         }
     }
     else {
         qWarning() << "Cant't parse playlist json data.";
     }
+    int countCollection = 0;
+    if(this->playlistCollection != NULL) {
+        countCollection = this->playlistCollection->count();
+    }
     qInfo() << QString("---Finish load %1 playlist collection from service---").arg(
-                   playlistCollection::Instance()->count());
-    emit successAllPlaylist();
+                   countCollection);
+    emit successLoadFromService();
 }
 
 void PlaylistCollectionService::slotAllPlaylistFailure()
@@ -109,7 +120,8 @@ void PlaylistCollectionService::slotAllPlaylistFailure()
     apiService::Instance()->getCookie()->clear();
     int retry = settings::Instance()->getValue(Settings::RETRY).toInt();
     int retrySec = retry / 1000;
-    qWarning() << QString("Retry load playlist collection in %1 sec.").arg(retrySec);
+    qWarning() << QString("---Retry load playlist collection in %1 sec. Relogin.---").arg(
+                      retrySec);
     QTimer::singleShot(retry, this, loadFromService);
 }
 

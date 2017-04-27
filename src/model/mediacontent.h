@@ -8,6 +8,15 @@ class MediaContent;
 class QString;
 class QJsonObject;
 
+/*
+ * Объект медиа файла.
+ * Методы:
+ *  fromJson - создание объекта из JSON.
+ * Свойства:
+ *  id - внутренний id.
+ *  url - ссылка на файл.
+ *  fileName - полное имя файла (путь).
+*/
 class MediaContent
 {
 public:

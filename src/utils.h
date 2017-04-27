@@ -5,6 +5,13 @@ class QString;
 class QUrl;
 class QIODevice;
 
+/*
+ * Класс утилит.
+ * Статические методы:
+ *  getFileName - получение полного имени файла из Url.
+ *  saveToDisk - сохранение данных в файл.
+ *  getUuid - получение уникального UUID.
+*/
 class Utils
 {
 public:

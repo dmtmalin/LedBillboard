@@ -2,12 +2,21 @@
 #define PLAYLISTCOLLECTION_H
 
 #include <QObject>
-#include "singleton.h"
 
 namespace Model {
 class PlaylistCollection;
 }
 
+/*
+ * Объект коллекции плейлистов.
+ * Методы:
+ *  getAllMedia - получение коллекции указателей медиа файлов
+ *  из всех плейлистов.
+ *  appendPlaylist - добавление плейлиста.
+ *  count - количество плейлистов.
+ * Свойста:
+ *  collection - указатель на коллекцию плейлистов.
+*/
 class Playlist;
 template <typename Playlist>
 class QList;
@@ -19,15 +28,14 @@ class PlaylistCollection : public QObject
     Q_OBJECT
 public:
     explicit PlaylistCollection(QObject *parent = 0);
-    void fromJson(QJsonArray &arr);
+    static PlaylistCollection* fromJson(QJsonArray &arr);
     QList<MediaContent *> getAllMedia();
+    void appendPlaylist(Playlist *playlist);
     int count();
     ~PlaylistCollection();
 
 private:
     QList<Playlist *> *collection;
 };
-
-typedef Singleton<PlaylistCollection> playlistCollection;
 
 #endif // PLAYLISTCOLLECTION_H

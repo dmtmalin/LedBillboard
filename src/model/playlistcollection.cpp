@@ -9,14 +9,16 @@ PlaylistCollection::PlaylistCollection(QObject *parent) : QObject(parent)
     this->collection = new QList<Playlist *>();
 }
 
-void PlaylistCollection::fromJson(QJsonArray &arr)
+PlaylistCollection *PlaylistCollection::fromJson(QJsonArray &arr)
 {
+    PlaylistCollection *playlistCollection = new PlaylistCollection();
     foreach (const QJsonValue &item, arr) {
         QJsonObject node = item.toObject()
                 ["node"].toObject();
         Playlist *playlist = Playlist::fromJson(node);
-        collection->append(playlist);
+        playlistCollection->appendPlaylist(playlist);
     }
+    return playlistCollection;
 }
 
 QList<MediaContent *> PlaylistCollection::getAllMedia()
@@ -29,6 +31,11 @@ QList<MediaContent *> PlaylistCollection::getAllMedia()
         }
     }
     return allMedia;
+}
+
+void PlaylistCollection::appendPlaylist(Playlist *playlist)
+{
+    this->collection->append(playlist);
 }
 
 int PlaylistCollection::count()
