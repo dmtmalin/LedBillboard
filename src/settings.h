@@ -9,14 +9,6 @@ class QSettings;
 class QString;
 class QVariant;
 
-/*
- * Одиночка настроек:
- *  HOST - адрес сервиса.
- *  USERNAME - логин.
- *  PASSWORD - пароль.
- *  BOARD - уникальное имя билборда (Slug).
- *  RETRY - интервал повторения сервисных операций, мс.
-*/
 class Settings : public QObject
 {
     Q_OBJECT

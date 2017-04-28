@@ -11,22 +11,16 @@ template <typename MediaContent>
 class QList;
 class QJsonObject;
 
-/*
- * Объект плейлиста.
- * Методы:
- *  fromJson - создание объекта из JSON.
- *  getMediaContent - получение коллекции указателей на объекты медиа.
- * Свойства:
- *  id - внутренний id.
- *  cronCommand - крон комманда.
- *  cronDescription - описание крон комманды.
- *  mediaContent - указатель на коллекцию медиа файлов.
-*/
 class Playlist
 {
 public:
     Playlist();
     ~Playlist();
+    /**
+     * @brief fromJson создание объекта из JSON.
+     * @param obj объект JSON.
+     * @return указатель на объект.
+     */
     static Playlist* fromJson(QJsonObject &obj);
     void setId(QString &id);
     void setCronCommand(QString &command);
@@ -37,9 +31,21 @@ public:
     QList<MediaContent *> *getMediaContent();
 
 private:
+    /**
+     * @brief id внутренний id.
+     */
     QString id;
+    /**
+     * @brief cronCommand крон комманда.
+     */
     QString cronCommand;
+    /**
+     * @brief cronDescription описание крон комманды.
+     */
     QString cronDescription;
+    /**
+     * @brief mediaContent указатель на коллекцию медиа файлов.
+     */
     QList<MediaContent *> *mediaContent;
 };
 

@@ -100,6 +100,9 @@ void PlaylistCollectionService::slotAllPlaylistSuccess(QByteArray &arr)
             qWarning() << "Playlist data is empty.";
         }
         else {
+            if (this->playlistCollection != NULL) {
+                delete this->playlistCollection;
+            }
             this->playlistCollection = PlaylistCollection::fromJson(edges);
         }
     }

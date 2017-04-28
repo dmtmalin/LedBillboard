@@ -7,16 +7,6 @@ namespace Model {
 class PlaylistCollection;
 }
 
-/*
- * Объект коллекции плейлистов.
- * Методы:
- *  getAllMedia - получение коллекции указателей медиа файлов
- *  из всех плейлистов.
- *  appendPlaylist - добавление плейлиста.
- *  count - количество плейлистов.
- * Свойста:
- *  collection - указатель на коллекцию плейлистов.
-*/
 class Playlist;
 template <typename Playlist>
 class QList;
@@ -28,13 +18,29 @@ class PlaylistCollection : public QObject
     Q_OBJECT
 public:
     explicit PlaylistCollection(QObject *parent = 0);
+    /**
+     * @brief fromJson создание объекта из JSON.
+     * @param arr масссив JSON.
+     * @return указатель на объект.
+     */
     static PlaylistCollection* fromJson(QJsonArray &arr);
     QList<MediaContent *> getAllMedia();
+    /**
+     * @brief appendPlaylist добавление плейлиста в коллекцию.
+     * @param playlist указатель на объект плейлиста.
+     */
     void appendPlaylist(Playlist *playlist);
+    /**
+     * @brief count количество плейлистов в коллекции.
+     * @return количество.
+     */
     int count();
     ~PlaylistCollection();
 
 private:
+    /**
+     * @brief collection коллекция плейлистов.
+     */
     QList<Playlist *> *collection;
 };
 
