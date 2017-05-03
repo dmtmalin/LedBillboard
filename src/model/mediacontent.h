@@ -18,10 +18,10 @@ public:
      * @return указатель на объект.
      */
     static MediaContent* fromJson(QJsonObject &obj);
-    void setId(QString &id);
+    void setId(int &id);
     void setUrl(QString &url);
     void setFileName(QString &fileName);
-    QString getId();
+    int getId();
     QString getUrl();
     QString getFileName();
 
@@ -29,7 +29,7 @@ private:
     /**
      * @brief id внутренний id.
      */
-    QString id;
+    int id;
     /**
      * @brief url ссылка на файл.
      */

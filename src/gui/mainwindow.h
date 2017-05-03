@@ -20,6 +20,7 @@ private:
 
 private slots:
     void slotSuccessAllPlaylist();
+    void slotSuccessDownloadMediaFiles();
 };
 
 #endif // MAINWINDOW_H

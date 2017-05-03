@@ -46,7 +46,8 @@ void ApiService::allPlaylist(const QString &boardSlug)
             "allPlaylist(board_Slug: \"%1\") {"
               "edges {"
                 "node {"
-                  "id,"
+                  "baseId,"
+                  "company,"
                   "schedule { id, cron, description },"
                   "media { id, file, duration, createAt, url }}}}}").arg(boardSlug);
     query.addQueryItem("query", graphQuery);

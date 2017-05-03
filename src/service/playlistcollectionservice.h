@@ -27,6 +27,11 @@ public:
      * @brief DownloadMediaFiles скачивание медиа файлов.
      */
     void DownloadMediaFiles();
+    /**
+     * @brief getCollection получение коллекции плейлистов.
+     * @return указатель на коллекцию.
+     */
+    PlaylistCollection* getCollection();
 
 private:
     int downloadCounter;

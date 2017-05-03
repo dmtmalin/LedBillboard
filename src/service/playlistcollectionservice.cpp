@@ -15,6 +15,7 @@
 PlaylistCollectionService::PlaylistCollectionService(QObject *parent) : QObject(parent)
 {
     this->downloadCounter = 0;
+    this->playlistCollection = new PlaylistCollection();
     connect(apiService::Instance(), SIGNAL(loginSuccess()), SLOT(slotLoginSuccess()));
     connect(apiService::Instance(), SIGNAL(loginFailure()), SLOT(slotLoginFailure()));
     connect(apiService::Instance(), SIGNAL(allPlaylistSuccess(QByteArray&)),
@@ -25,9 +26,7 @@ PlaylistCollectionService::PlaylistCollectionService(QObject *parent) : QObject(
 
 PlaylistCollectionService::~PlaylistCollectionService()
 {
-    if (this->playlistCollection != NULL) {
-        delete this->playlistCollection;
-    }
+    delete this->playlistCollection;
 }
 
 void PlaylistCollectionService::loadFromService()
@@ -45,11 +44,7 @@ void PlaylistCollectionService::loadFromService()
 
 void PlaylistCollectionService::DownloadMediaFiles()
 {
-    qInfo() << "---Start sync media files.---";
-    if (this->playlistCollection == NULL) {
-        qCritical() << "---Playlist collection is NULL! Finish sync media files.---";
-        return;
-    }
+    qInfo() << "---Start sync media files.---";    
     QList<MediaContent *> mediaContent = this->playlistCollection->getAllMedia();
     foreach (MediaContent *media, mediaContent) {
         QString url = media->getUrl();
@@ -67,6 +62,11 @@ void PlaylistCollectionService::DownloadMediaFiles()
         qInfo() << "---Finish sync media files. Nothing sync.---";
         emit successDownloadMediaFiles();
     }
+}
+
+PlaylistCollection *PlaylistCollectionService::getCollection()
+{
+    return this->playlistCollection;
 }
 
 /*
@@ -99,11 +99,8 @@ void PlaylistCollectionService::slotAllPlaylistSuccess(QByteArray &arr)
         if (edges.isEmpty()) {
             qWarning() << "Playlist data is empty.";
         }
-        else {
-            if (this->playlistCollection != NULL) {
-                delete this->playlistCollection;
-            }
-            this->playlistCollection = PlaylistCollection::fromJson(edges);
+        else {            
+            this->playlistCollection->updateFromJson(edges);
         }
     }
     else {

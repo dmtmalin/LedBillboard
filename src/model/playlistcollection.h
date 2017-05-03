@@ -11,6 +11,7 @@ class Playlist;
 template <typename Playlist>
 class QList;
 class QJsonArray;
+class QStringListModel;
 class MediaContent;
 
 class PlaylistCollection : public QObject
@@ -19,22 +20,30 @@ class PlaylistCollection : public QObject
 public:
     explicit PlaylistCollection(QObject *parent = 0);
     /**
-     * @brief fromJson создание объекта из JSON.
-     * @param arr масссив JSON.
-     * @return указатель на объект.
+     * @brief updateFromJson обновление объекта через объект JSON
+     * @param arr масссив JSON
      */
-    static PlaylistCollection* fromJson(QJsonArray &arr);
-    QList<MediaContent *> getAllMedia();
+    void updateFromJson(QJsonArray &arr);
     /**
-     * @brief appendPlaylist добавление плейлиста в коллекцию.
-     * @param playlist указатель на объект плейлиста.
+     * @brief getAllMedia получение медиа плейлистов.
+     * @return массив указателей на медиа.
      */
-    void appendPlaylist(Playlist *playlist);
+    QList<MediaContent *> getAllMedia();
     /**
      * @brief count количество плейлистов в коллекции.
      * @return количество.
      */
     int count();
+    /**
+     * @brief getPlaylist возвращает плейлист по индексу.
+     * @param index индекс.
+     * @return указатель на объект.
+     */
+    Playlist *getPlaylist(const int index);
+    /**
+     * @brief clear очистить плейлисты в коллекции.
+     */
+    void clear();
     ~PlaylistCollection();
 
 private:
@@ -42,6 +51,15 @@ private:
      * @brief collection коллекция плейлистов.
      */
     QList<Playlist *> *collection;
+signals:
+    /**
+     * @brief beginedUpdate сигнал о начале обновления коллекции.
+     */
+    void begunUpdate();
+    /**
+     * @brief finishedUpdate сигнал о завершении обновления коллекции.
+     */
+    void finishedUpdate();
 };
 
 #endif // PLAYLISTCOLLECTION_H

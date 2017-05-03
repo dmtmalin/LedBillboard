@@ -6,28 +6,24 @@
 #include "model/mediacontent.h"
 #include "playlist.h"
 
-Playlist::Playlist()
+Playlist::Playlist(QObject *parent) : QObject(parent)
 {
     this->mediaContent = new QList<MediaContent *>();
 }
 
-Playlist::~Playlist()
-{    
-    qDeleteAll(this->mediaContent->begin(), this->mediaContent->end());
-    delete this->mediaContent;
-}
-
 Playlist *Playlist::fromJson(QJsonObject &obj)
 {
-    QString id = obj["id"].toString();
+    int id = obj["baseId"].toInt();
     QString command = obj["schedule"].toObject()
             ["cron"].toString();
     QString description = obj["schedule"].toObject()
             ["description"].toString();
+    QString company = obj["company"].toString();
     Playlist *playlist = new Playlist();
     playlist->setId(id);
     playlist->setCronCommand(command);
     playlist->setCronDescription(description);
+    playlist->setCompany(company);
     QJsonArray mediaArr = obj["media"].toArray();
     if (mediaArr.isEmpty()) {
         qWarning() << QString("Playlist %1 not have media item.").arg(id);
@@ -46,7 +42,7 @@ Playlist *Playlist::fromJson(QJsonObject &obj)
  * SETTERS
 */
 
-void Playlist::setId(QString &id)
+void Playlist::setId(int &id)
 {
     this->id = id;
 }
@@ -61,11 +57,16 @@ void Playlist::setCronDescription(QString &desc)
     this->cronDescription = desc;
 }
 
+void Playlist::setCompany(QString &name)
+{
+    this->company = name;
+}
+
 /*
  * GETTERS
 */
 
-QString Playlist::getId()
+int Playlist::getId()
 {
     return this->id;
 }
@@ -80,7 +81,23 @@ QString Playlist::getCronDescription()
     return this->cronDescription;
 }
 
+QString Playlist::getCompany()
+{
+    return this->company;
+}
+
 QList<MediaContent *> *Playlist::getMediaContent()
 {
     return this->mediaContent;
+}
+
+MediaContent *Playlist::getMedia(int index)
+{
+    return this->mediaContent->at(index);
+}
+
+Playlist::~Playlist()
+{
+    qDeleteAll(this->mediaContent->begin(), this->mediaContent->end());
+    delete this->mediaContent;
 }

@@ -1,6 +1,8 @@
 #ifndef PLAYLIST_H
 #define PLAYLIST_H
 
+#include <QObject>
+
 namespace Model {
 class Playlist;
 }
@@ -11,30 +13,34 @@ template <typename MediaContent>
 class QList;
 class QJsonObject;
 
-class Playlist
+class Playlist : public QObject
 {
+    Q_OBJECT
 public:
-    Playlist();
-    ~Playlist();
+    explicit Playlist(QObject *parent = 0);
     /**
      * @brief fromJson создание объекта из JSON.
      * @param obj объект JSON.
      * @return указатель на объект.
      */
     static Playlist* fromJson(QJsonObject &obj);
-    void setId(QString &id);
+    void setId(int &id);
     void setCronCommand(QString &command);
     void setCronDescription(QString &desc);
-    QString getId();
+    void setCompany(QString &name);
+    int getId();
     QString getCronCommand();
     QString getCronDescription();
+    QString getCompany();
     QList<MediaContent *> *getMediaContent();
+    MediaContent *getMedia(int index);
+    ~Playlist();
 
 private:
     /**
      * @brief id внутренний id.
      */
-    QString id;
+    int id;
     /**
      * @brief cronCommand крон комманда.
      */
@@ -43,6 +49,10 @@ private:
      * @brief cronDescription описание крон комманды.
      */
     QString cronDescription;
+    /**
+     * @brief company наименование компании.
+     */
+    QString company;
     /**
      * @brief mediaContent указатель на коллекцию медиа файлов.
      */

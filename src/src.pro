@@ -33,7 +33,10 @@ SOURCES += gui/mainwindow.cpp \
     model/mediacontent.cpp \
     model/playlistcollection.cpp \
     service/playlistcollectionservice.cpp \
-    utils.cpp
+    utils.cpp \
+    gui/playlistwidget.cpp \
+    model/tableview/mediatablemodel.cpp \
+    model/tableview/playlisttablemodel.cpp
 
 HEADERS += gui/mainwindow.h \
     service/billboardservice.h \
@@ -45,10 +48,14 @@ HEADERS += gui/mainwindow.h \
     model/mediacontent.h \
     model/playlistcollection.h \
     service/playlistcollectionservice.h \
-    utils.h
+    utils.h \
+    gui/playlistwidget.h \
+    model/tableview/mediatablemodel.h \
+    model/tableview/playlisttablemodel.h
 
 FORMS += gui/mainwindow.ui \
-    gui/mediawindow.ui
+    gui/mediawindow.ui \
+    gui/playlistwidget.ui
 
 win32:CONFIG(release, debug|release) {
     LIBS += -L$$PWD/../3rdparty/VLCQt/lib/ -llibVLCQtCore.dll \

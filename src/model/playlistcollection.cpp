@@ -1,6 +1,7 @@
 #include <QList>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QStringListModel>
 #include "model/playlist.h"
 #include "playlistcollection.h"
 
@@ -9,16 +10,17 @@ PlaylistCollection::PlaylistCollection(QObject *parent) : QObject(parent)
     this->collection = new QList<Playlist *>();
 }
 
-PlaylistCollection *PlaylistCollection::fromJson(QJsonArray &arr)
-{
-    PlaylistCollection *playlistCollection = new PlaylistCollection();
-    foreach (const QJsonValue &item, arr) {
-        QJsonObject node = item.toObject()
+void PlaylistCollection::updateFromJson(QJsonArray &arr)
+{    
+    emit begunUpdate();
+    clear();
+    for(int i = 0; i < arr.size(); i++) {
+        QJsonObject node = arr[i].toObject()
                 ["node"].toObject();
         Playlist *playlist = Playlist::fromJson(node);
-        playlistCollection->appendPlaylist(playlist);
+        this->collection->append(playlist);
     }
-    return playlistCollection;
+    emit finishedUpdate();
 }
 
 QList<MediaContent *> PlaylistCollection::getAllMedia()
@@ -33,18 +35,23 @@ QList<MediaContent *> PlaylistCollection::getAllMedia()
     return allMedia;
 }
 
-void PlaylistCollection::appendPlaylist(Playlist *playlist)
-{
-    this->collection->append(playlist);
-}
-
 int PlaylistCollection::count()
 {
     return this->collection->count();
 }
 
-PlaylistCollection::~PlaylistCollection()
+Playlist *PlaylistCollection::getPlaylist(const int index)
+{
+    return this->collection->at(index);
+}
+
+void PlaylistCollection::clear()
 {
     qDeleteAll(this->collection->begin(), this->collection->end());
+}
+
+PlaylistCollection::~PlaylistCollection()
+{
+    clear();
     delete this->collection;
 }

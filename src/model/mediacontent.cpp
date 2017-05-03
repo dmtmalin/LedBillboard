@@ -10,7 +10,7 @@ MediaContent::MediaContent()
 
 MediaContent *MediaContent::fromJson(QJsonObject &obj)
 {
-    QString id = obj["id"].toString();
+    int id = obj["id"].toInt();
     QString url = obj["url"].toString();
     QString filename = Utils::getFileName(QUrl(url), "media");
     MediaContent* media = new MediaContent();
@@ -24,7 +24,7 @@ MediaContent *MediaContent::fromJson(QJsonObject &obj)
  * SETTERS
 */
 
-void MediaContent::setId(QString &id)
+void MediaContent::setId(int &id)
 {
     this->id = id;
 }
@@ -43,7 +43,7 @@ void MediaContent::setFileName(QString &fileName)
  * GETTERS
 */
 
-QString MediaContent::getId()
+int MediaContent::getId()
 {
     return this->id;
 }
