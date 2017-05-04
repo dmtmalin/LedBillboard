@@ -4,6 +4,12 @@
 #include "model/playlistcollection.h"
 #include "playlisttablemodel.h"
 
+const unsigned short PlaylistTableModel::COLUMNS = 4;
+const unsigned short PlaylistTableModel::ID = 0;
+const unsigned short PlaylistTableModel::CRON = 1;
+const unsigned short PlaylistTableModel::CRON_DESC = 2;
+const unsigned short PlaylistTableModel::COMPANY = 3;
+
 PlaylistTableModel::PlaylistTableModel(PlaylistCollection *parent)
     :QAbstractTableModel(parent)
 {
@@ -21,7 +27,7 @@ int PlaylistTableModel::rowCount(const QModelIndex &parent) const
 int PlaylistTableModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return 4;
+    return PlaylistTableModel::COLUMNS;
 }
 
 QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
@@ -39,13 +45,13 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
 
     if (role == Qt::DisplayRole) {
         switch (col) {
-            case 0:
+            case PlaylistTableModel::ID:
                 return QVariant(playlist->getId());
-            case 1:
+            case PlaylistTableModel::CRON:
                 return playlist->getCronCommand();
-            case 2:
+            case PlaylistTableModel::CRON_DESC:
                 return playlist->getCronDescription();
-            case 3:
+            case PlaylistTableModel::COMPANY:
                 return playlist->getCompany();
         }
     }
@@ -53,6 +59,28 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(playlist);
     }
     return QVariant();
+}
+
+QVariant PlaylistTableModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (role != Qt::DisplayRole)
+        return QVariant();
+
+     if (orientation == Qt::Horizontal) {
+         switch (section) {
+            case PlaylistTableModel::ID:
+                return tr("ID");
+            case PlaylistTableModel::CRON:
+                return tr("Команда cron");
+            case PlaylistTableModel::CRON_DESC:
+                return tr("Описание cron");
+            case PlaylistTableModel::COMPANY:
+                return tr("Компания");
+            default:
+                return QVariant();
+         }
+     }
+     return QVariant();
 }
 
 void PlaylistTableModel::slotBegunUpdate()

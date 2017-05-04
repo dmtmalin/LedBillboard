@@ -11,7 +11,7 @@ Playlist::Playlist(QObject *parent) : QObject(parent)
     this->mediaContent = new QList<MediaContent *>();
 }
 
-Playlist *Playlist::fromJson(QJsonObject &obj)
+Playlist *Playlist::fromJson(QJsonObject &obj, QObject *parent)
 {
     int id = obj["baseId"].toInt();
     QString command = obj["schedule"].toObject()
@@ -19,7 +19,7 @@ Playlist *Playlist::fromJson(QJsonObject &obj)
     QString description = obj["schedule"].toObject()
             ["description"].toString();
     QString company = obj["company"].toString();
-    Playlist *playlist = new Playlist();
+    Playlist *playlist = new Playlist(parent);
     playlist->setId(id);
     playlist->setCronCommand(command);
     playlist->setCronDescription(description);
@@ -31,7 +31,7 @@ Playlist *Playlist::fromJson(QJsonObject &obj)
     else {
         foreach (const QJsonValue &item, mediaArr) {
             QJsonObject obj = item.toObject();
-            MediaContent *media = MediaContent::fromJson(obj);
+            MediaContent *media = MediaContent::fromJson(obj, playlist);
             playlist->mediaContent->append(media);
         }
     }

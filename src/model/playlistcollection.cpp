@@ -17,7 +17,7 @@ void PlaylistCollection::updateFromJson(QJsonArray &arr)
     for(int i = 0; i < arr.size(); i++) {
         QJsonObject node = arr[i].toObject()
                 ["node"].toObject();
-        Playlist *playlist = Playlist::fromJson(node);
+        Playlist *playlist = Playlist::fromJson(node, this);
         this->collection->append(playlist);
     }
     emit finishedUpdate();

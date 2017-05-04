@@ -5,9 +5,6 @@
 #include <QNetworkCookieJar>
 #include "singleton.h"
 
-extern const char* LOGIN_URL;
-extern const char* GRAPH_URL;
-
 namespace Service {
 class ApiService;
 }
@@ -33,6 +30,8 @@ class ApiService : public QObject
 {
     Q_OBJECT
 public:
+    static const QString LOGIN_URL;
+    static const QString GRAPH_URL;
     explicit ApiService(QObject *parent = 0);
     ~ApiService();
     /**

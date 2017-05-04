@@ -9,6 +9,7 @@
 #include "model/mediacontent.h"
 #include "model/playlistcollection.h"
 #include "service/apiservice.h"
+#include "service/timingservice.h"
 #include "settings.h"
 #include "playlistcollectionservice.h"
 
@@ -80,11 +81,8 @@ void PlaylistCollectionService::slotLoginSuccess()
 }
 
 void PlaylistCollectionService::slotLoginFailure()
-{    
-    int retry = settings::Instance()->getValue(Settings::RETRY).toInt();
-    int retrySec = retry / 1000;
-    qInfo() << QString("Retry login in %1 sec.").arg(retrySec);
-    QTimer::singleShot(retry, apiService::Instance(), apiService::Instance()->login);
+{
+    timingService::Instance()->retryLogin();
 }
 
 void PlaylistCollectionService::slotAllPlaylistSuccess(QByteArray &arr)
@@ -117,12 +115,7 @@ void PlaylistCollectionService::slotAllPlaylistSuccess(QByteArray &arr)
 
 void PlaylistCollectionService::slotAllPlaylistFailure()
 {
-    apiService::Instance()->getCookie()->clear();
-    int retry = settings::Instance()->getValue(Settings::RETRY).toInt();
-    int retrySec = retry / 1000;
-    qWarning() << QString("---Retry load playlist collection in %1 sec. Relogin.---").arg(
-                      retrySec);
-    QTimer::singleShot(retry, this, loadFromService);
+    timingService::Instance()->retryLoadPlaylistCollection();
 }
 
 void PlaylistCollectionService::slotDownloadFinished()

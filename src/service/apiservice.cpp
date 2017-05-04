@@ -10,8 +10,8 @@
 #include "utils.h"
 #include "apiservice.h"
 
-const char* LOGIN_URL = "/account/ajax_login";
-const char* GRAPH_URL = "/graphql";
+const QString ApiService::LOGIN_URL = "/account/ajax_login";
+const QString ApiService::GRAPH_URL = "/graphql";
 
 ApiService::ApiService(QObject *parent) : QObject(parent)
 {
@@ -28,7 +28,7 @@ void ApiService::login()
     query.addQueryItem("username", username);
     query.addQueryItem("password", password);
     QString host = settings::Instance()->getValue(Settings::HOST);
-    QUrl url(host + LOGIN_URL);
+    QUrl url(host + ApiService::LOGIN_URL);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     QByteArray postData = query.toString(QUrl::FullyEncoded).toUtf8();
@@ -52,7 +52,7 @@ void ApiService::allPlaylist(const QString &boardSlug)
                   "media { id, file, duration, createAt, url }}}}}").arg(boardSlug);
     query.addQueryItem("query", graphQuery);
     QString host = settings::Instance()->getValue(Settings::HOST);
-    QUrl url(host + GRAPH_URL);
+    QUrl url(host + ApiService::GRAPH_URL);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     QByteArray postData = query.toString(QUrl::FullyEncoded).toUtf8();

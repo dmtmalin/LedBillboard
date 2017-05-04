@@ -36,7 +36,8 @@ SOURCES += gui/mainwindow.cpp \
     utils.cpp \
     gui/playlistwidget.cpp \
     model/tableview/mediatablemodel.cpp \
-    model/tableview/playlisttablemodel.cpp
+    model/tableview/playlisttablemodel.cpp \
+    service/timingservice.cpp
 
 HEADERS += gui/mainwindow.h \
     service/billboardservice.h \
@@ -51,7 +52,8 @@ HEADERS += gui/mainwindow.h \
     utils.h \
     gui/playlistwidget.h \
     model/tableview/mediatablemodel.h \
-    model/tableview/playlisttablemodel.h
+    model/tableview/playlisttablemodel.h \
+    service/timingservice.h
 
 FORMS += gui/mainwindow.ui \
     gui/mediawindow.ui \

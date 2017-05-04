@@ -7,6 +7,7 @@
 #include "service/apiservice.h"
 #include "service/billboardservice.h"
 #include "service/playlistcollectionservice.h"
+#include "service/timingservice.h"
 #include "settings.h"
 #include "gui/mainwindow.h"
 
@@ -27,6 +28,7 @@ void releaseResources() {
     delete billboardService::Instance();
     delete playlistCollectionService::Instance();
     delete settings::Instance();
+    delete timingService::Instance();
 
     if (logFile != NULL) {
         releaseLogFile();
@@ -35,6 +37,7 @@ void releaseResources() {
 
 void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
+    Q_UNUSED(context);
     QString level;
     switch (type) {
         case QtInfoMsg:
@@ -56,13 +59,7 @@ void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const 
             break;
     }
     QDateTime now = QDateTime::currentDateTime();
-    QString message = QString("%1 [%2]: %3 (%4:%5, %6)").arg(
-                now.toString(Qt::ISODateWithMs)
-                , level
-                , msg
-                , context.file
-                , QString::number(context.line)
-                , context.function);
+    QString message = QString("%1 [%2]: %3").arg(now.toString(Qt::ISODateWithMs), level, msg);
 
     QTextStream ts(logFile);
     ts << message << endl;   

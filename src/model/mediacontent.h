@@ -1,6 +1,8 @@
 #ifndef MEDIACONTENT_H
 #define MEDIACONTENT_H
 
+#include <QObject>
+
 namespace Model {
 class MediaContent;
 }
@@ -8,16 +10,17 @@ class MediaContent;
 class QString;
 class QJsonObject;
 
-class MediaContent
+class MediaContent : public QObject
 {
+    Q_OBJECT
 public:
-    MediaContent();
+    MediaContent(QObject *parent = 0);
     /**
      * @brief fromJson создание объекта из JSON.
      * @param obj объект JSON.
      * @return указатель на объект.
      */
-    static MediaContent* fromJson(QJsonObject &obj);
+    static MediaContent* fromJson(QJsonObject &obj, QObject *parent = 0);
     void setId(int &id);
     void setUrl(QString &url);
     void setFileName(QString &fileName);

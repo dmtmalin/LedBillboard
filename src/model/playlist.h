@@ -23,7 +23,7 @@ public:
      * @param obj объект JSON.
      * @return указатель на объект.
      */
-    static Playlist* fromJson(QJsonObject &obj);
+    static Playlist* fromJson(QJsonObject &obj, QObject *parent = 0);
     void setId(int &id);
     void setCronCommand(QString &command);
     void setCronDescription(QString &desc);
