@@ -1,4 +1,5 @@
 #include "service/playlistcollectionservice.h"
+#include "service/mediaservice.h"
 #include "gui/playlistwidget.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -12,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->ui->tabWidget->addTab(new PlaylistWidget, tr("Плейлисты"));
 
     connect(playlistCollectionService::Instance(), SIGNAL(successLoadFromService()), SLOT(slotSuccessAllPlaylist()));
-    connect(playlistCollectionService::Instance(), SIGNAL(successDownloadMediaFiles()), SLOT(slotSuccessDownloadMediaFiles()));
+    connect(mediaService::Instance(), SIGNAL(finishedDownloadMediaFiles()), SLOT(slotFinishedDownloadMediaFiles()));
 
     playlistCollectionService::Instance()->loadFromService();
 }
@@ -25,10 +26,10 @@ MainWindow::~MainWindow()
 void MainWindow::slotSuccessAllPlaylist()
 {
     //ui->labelStatus->setText("Загрузка медиа...");
-    playlistCollectionService::Instance()->DownloadMediaFiles();
+    mediaService::Instance()->DownloadMediaFiles();
 }
 
-void MainWindow::slotSuccessDownloadMediaFiles()
+void MainWindow::slotFinishedDownloadMediaFiles()
 {
     //ui->labelStatus->setText("Плейлисты и медиа обновлены.");
 }

@@ -33,8 +33,7 @@ public:
      */
     PlaylistCollection* getCollection();
 
-private:
-    int downloadCounter;
+private:   
     PlaylistCollection *playlistCollection;
 
 private slots:
@@ -58,21 +57,12 @@ private slots:
      * Повторяем loadFromService через Setings::RETRY.
      */
     void slotAllPlaylistFailure();
-    /**
-     * @brief slotDownloadFinished обработка сигнала скачивания файла. Считаем сколько
-     * осталось до скачивания всех файлов через downloadCounter.
-     */
-    void slotDownloadFinished();    
 signals:
     /**
      * @brief successLoadFromService сигнал успешной синхронизации плейлистов с сервиса.
      * После него подразумевается запуск синхронизации медиа (DownloadMediaFiles).
      */
     void successLoadFromService();
-    /**
-     * @brief successDownloadMediaFiles сигнал успешной синхронизации медиа.
-     */
-    void successDownloadMediaFiles();
 };
 
 typedef Singleton<PlaylistCollectionService> playlistCollectionService;

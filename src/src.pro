@@ -37,7 +37,8 @@ SOURCES += gui/mainwindow.cpp \
     gui/playlistwidget.cpp \
     model/tableview/mediatablemodel.cpp \
     model/tableview/playlisttablemodel.cpp \
-    service/timingservice.cpp
+    service/timingservice.cpp \
+    service/mediaservice.cpp
 
 HEADERS += gui/mainwindow.h \
     service/billboardservice.h \
@@ -53,7 +54,8 @@ HEADERS += gui/mainwindow.h \
     gui/playlistwidget.h \
     model/tableview/mediatablemodel.h \
     model/tableview/playlisttablemodel.h \
-    service/timingservice.h
+    service/timingservice.h \
+    service/mediaservice.h
 
 FORMS += gui/mainwindow.ui \
     gui/mediawindow.ui \
@@ -62,14 +64,18 @@ FORMS += gui/mainwindow.ui \
 win32:CONFIG(release, debug|release) {
     LIBS += -L$$PWD/../3rdparty/VLCQt/lib/ -llibVLCQtCore.dll \
         -L$$PWD/../3rdparty/VLCQt/lib/ -llibVLCQtQml.dll \
-        -L$$PWD/../3rdparty/VLCQt/lib/ -llibVLCQtWidgets.dll
+        -L$$PWD/../3rdparty/VLCQt/lib/ -llibVLCQtWidgets.dll \
+        -L$$PWD/../3rdparty/ccronexpr/lib -llibccronexpr.dll
 } else {
     win32:CONFIG(debug, debug|release) {
         LIBS += -L$$PWD/../3rdparty/VLCQt/lib/ -llibVLCQtCored.dll \
             -L$$PWD/../3rdparty/VLCQt/lib/ -llibVLCQtQmld.dll \
-            -L$$PWD/../3rdparty/VLCQt/lib/ -llibVLCQtWidgetsd.dll
+            -L$$PWD/../3rdparty/VLCQt/lib/ -llibVLCQtWidgetsd.dll \
+            -L$$PWD/../3rdparty/ccronexpr/lib -llibccronexprd.dll
     }
 }
 
-INCLUDEPATH += $$PWD/../3rdparty/VLCQt/include
-DEPENDPATH += $$PWD/../3rdparty/VLCQt/include
+INCLUDEPATH += $$PWD/../3rdparty/VLCQt/include \
+    $$PWD/../3rdparty/ccronexpr/include
+DEPENDPATH += $$PWD/../3rdparty/VLCQt/include \
+    $$PWD/../3rdparty/ccronexpr/include

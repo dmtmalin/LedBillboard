@@ -55,14 +55,14 @@ void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const 
         case QtFatalMsg:
             level = "FATAL";
             break;
-        default:           
+        default:
             break;
     }
     QDateTime now = QDateTime::currentDateTime();
     QString message = QString("%1 [%2]: %3").arg(now.toString(Qt::ISODateWithMs), level, msg);
 
     QTextStream ts(logFile);
-    ts << message << endl;   
+    ts << message << endl;
 }
 
 int main(int argc, char *argv[])
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     logFile = new QFile(app_dir + "/app.log");
     logFile->open(QIODevice::WriteOnly | QIODevice::Append);
 
-#ifndef QT_DEBUG    
+#ifndef QT_DEBUG
     qInstallMessageHandler(logMessageHandler);
 #endif
 

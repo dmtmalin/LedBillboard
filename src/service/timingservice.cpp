@@ -26,7 +26,6 @@ void TimingService::retryLogin()
 
 void TimingService::retryLoadPlaylistCollection()
 {
-    apiService::Instance()->getCookie()->clear();
     int msec = settings::Instance()->getValue(Settings::RETRY).toInt();
     int sec = msec / 1000;
     qInfo() << QString("---Retry load playlist collection in %1 sec. Relogin.---").arg(sec);

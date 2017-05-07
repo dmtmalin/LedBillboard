@@ -121,13 +121,13 @@ void ApiService::slotDownloadFinished()
         QString filename = reply->request().attribute(QNetworkRequest::User).toString();
         if (Utils::saveToDisk(filename, reply)) {
             qInfo() << QString("Download of %1 succeeded (saved to %2).").arg(
-                           url.toEncoded().constData(), filename);
-            emit downloadFinished();
+                           url.toEncoded().constData(), filename);            
         }
     }
     else {
         qWarning() << QString("Download media is failed: %1.").arg(reply->errorString());
     }
+    emit downloadFinished();
     reply->deleteLater();
 }
 
