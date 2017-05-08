@@ -18,7 +18,8 @@ public:
         USERNAME,
         PASSWORD,
         BOARD,
-        RETRY
+        RETRY,
+        SCREEN
     };
     Q_ENUM(Key)
     explicit Settings(QObject *parent = 0);

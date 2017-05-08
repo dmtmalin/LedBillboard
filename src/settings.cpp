@@ -12,8 +12,9 @@ Settings::Settings(QObject *parent) : QObject(parent)
     this->setDefaultValue(Settings::HOST, "http://127.0.0.1:8000");
     this->setDefaultValue(Settings::USERNAME, "admin@admin.com");
     this->setDefaultValue(Settings::PASSWORD, "adminAdmin");
-    this->setDefaultValue(Settings::BOARD, "defaultBoard");
+    this->setDefaultValue(Settings::BOARD, "defaultBoard");    
     this->setDefaultValue(Settings::RETRY, 60000);
+    this->setDefaultValue(Settings::SCREEN, 0);
     this->settings->sync();
 }
 

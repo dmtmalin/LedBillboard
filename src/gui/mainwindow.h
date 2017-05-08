@@ -21,6 +21,8 @@ private:
 private slots:
     void slotSuccessAllPlaylist();
     void slotFinishedDownloadMediaFiles();
+    void slotPressedButtonShowBoard();
+    void slotPressedButtonHideBoard();
 };
 
 #endif // MAINWINDOW_H

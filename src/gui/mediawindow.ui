@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="VlcWidgetVideo" name="verticalWidget" native="true" />
+    <widget class="VlcWidgetVideo" name="video" native="true"/>
    </item>
   </layout>
  </widget>

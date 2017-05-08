@@ -16,6 +16,7 @@ public:
     ~BillboardService();
 
     void show();
+    void hide();
 
 private:
     MediaWindow *mediaView;
