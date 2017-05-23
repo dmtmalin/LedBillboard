@@ -3,12 +3,15 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QMutableListIterator>
 #include "model/mediacontent.h"
 #include "playlist.h"
 
 Playlist::Playlist(QObject *parent) : QObject(parent)
 {
     this->mediaContent = new QList<MediaContent *>();
+    this->iMediaContent = new QMutableListIterator<MediaContent *>(
+                *this->mediaContent);
 }
 
 Playlist *Playlist::fromJson(QJsonObject &obj, QObject *parent)
@@ -32,7 +35,7 @@ Playlist *Playlist::fromJson(QJsonObject &obj, QObject *parent)
         foreach (const QJsonValue &item, mediaArr) {
             QJsonObject obj = item.toObject();
             MediaContent *media = MediaContent::fromJson(obj, playlist);
-            playlist->mediaContent->append(media);
+            playlist->addMedia(media);
         }
     }
     return playlist;
@@ -96,8 +99,21 @@ MediaContent *Playlist::getMedia(int index)
     return this->mediaContent->at(index);
 }
 
+MediaContent *Playlist::nextMedia()
+{
+    if(!this->iMediaContent->hasNext())
+        this->iMediaContent->toFront();    
+    return this->iMediaContent->next();
+}
+
+void Playlist::addMedia(MediaContent *media)
+{
+    this->iMediaContent->insert(media);
+}
+
 Playlist::~Playlist()
 {
+    delete this->iMediaContent;
     qDeleteAll(this->mediaContent->begin(), this->mediaContent->end());
     delete this->mediaContent;
 }

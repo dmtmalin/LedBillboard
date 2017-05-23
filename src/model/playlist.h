@@ -12,6 +12,8 @@ class QString;
 template <typename MediaContent>
 class QList;
 class QJsonObject;
+template <typename MediaContent>
+class QMutableListIterator;
 
 class Playlist : public QObject
 {
@@ -34,6 +36,8 @@ public:
     QString getCompany();
     QList<MediaContent *> *getMediaContent();
     MediaContent *getMedia(int index);
+    MediaContent *nextMedia();
+    void addMedia(MediaContent* media);
     ~Playlist();
 
 private:
@@ -57,6 +61,7 @@ private:
      * @brief mediaContent указатель на коллекцию медиа файлов.
      */
     QList<MediaContent *> *mediaContent;
+    QMutableListIterator<MediaContent *> *iMediaContent;
 };
 
 #endif // PLAYLIST_H

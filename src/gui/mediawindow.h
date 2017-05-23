@@ -9,8 +9,8 @@ class MediaWindow;
 
 class VlcInstance;
 class VlcMediaPlayer;
-class VlcMediaListPlayer;
-class VlcMediaList;
+class VlcMedia;
+class MediaContent;
 
 class MediaWindow : public QWidget
 {
@@ -21,16 +21,19 @@ public:
     ~MediaWindow();
 
 public:
-    void play();
-    void pause();
-    void stop();
+    void play(MediaContent *content);
 
 private:
     Ui::MediaWindow *ui;
     VlcInstance *instance;
     VlcMediaPlayer *player;
-    VlcMediaList *mediaList;
-    VlcMediaListPlayer *playlist;
+    VlcMedia *media;
+
+private slots:
+    void slotEnd();
+
+signals:
+    void end();
 };
 
 #endif // BILLBOARD_H

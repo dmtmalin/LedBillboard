@@ -1,3 +1,5 @@
+#include "model/playlistcollection.h"
+#include "model/playlist.h"
 #include "service/billboardservice.h"
 #include "service/playlistcollectionservice.h"
 #include "service/mediaservice.h"
@@ -10,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     this->ui->setupUi(this);
-    this->ui->tabWidget->addTab(new PlaylistWidget, tr("Плейлисты"));
+    this->ui->tabWidget->addTab(new PlaylistWidget, tr("Плейлисты"));    
 
     connect(this->ui->buttonShowBoard, SIGNAL(pressed()), SLOT(slotPressedButtonShowBoard()));
     connect(this->ui->buttonHideBoard, SIGNAL(pressed()), SLOT(slotPressedButtonHideBoard()));
@@ -38,6 +40,11 @@ void MainWindow::slotSuccessAllPlaylist()
 void MainWindow::slotFinishedDownloadMediaFiles()
 {
     //ui->labelStatus->setText("Плейлисты и медиа обновлены.");
+    int count = playlistCollectionService::Instance()->getCollection()->count();
+    if (count > 0) {
+        Playlist *playlist = playlistCollectionService::Instance()->getCollection()->getPlaylist(0);
+        billboardService::Instance()->play(playlist);
+    }
 }
 
 void MainWindow::slotPressedButtonShowBoard()
